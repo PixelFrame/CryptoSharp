@@ -61,6 +61,10 @@
       <Project>{20f2ecfd-0b3d-46e1-864f-cf22e4141c52}</Project>
       <Name>DES_lib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RSA_lib\RSA_lib.csproj">
+      <Project>{a3f58123-2219-4137-bd6f-627e5a044af5}</Project>
+      <Name>RSA_lib</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="CryptoSharp_ICON_NT.ico" />

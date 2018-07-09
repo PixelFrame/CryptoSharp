@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PrimeGen.cs" />
+    <Compile Include="RSA_Data.cs" />
     <Compile Include="RSA_Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
