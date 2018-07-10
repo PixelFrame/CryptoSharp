@@ -45,5 +45,11 @@
     <Compile Include="DES_Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ByteString\ByteString_lib.csproj">
+      <Project>{4da0eca0-b019-480f-9468-f58277b5fef5}</Project>
+      <Name>ByteString_lib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

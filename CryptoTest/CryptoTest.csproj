@@ -32,8 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>CryptoSharp_ICON_TEST.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -68,7 +67,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CryptoSharp_ICON_NT.ico" />
+    <Content Include="CryptoSharp_ICON_TEST.ico" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

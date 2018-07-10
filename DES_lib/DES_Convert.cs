@@ -11,7 +11,7 @@ namespace DES_lib
 {
     class DES_Convert
     {
-		public QWORD BinStringToQWORD(String str)
+		public static QWORD BinStringToQWORD(String str)
 		{
 			QWORD output = 0;
 			for (int i = 0; i < str.Length; ++i)
@@ -21,7 +21,7 @@ namespace DES_lib
 			return output;
 		}
 
-		public QWORD HexStringToQWORD(String str)
+		public static QWORD HexStringToQWORD(String str)
 		{
 			QWORD output = 0;
 			for (int i = 0; i < str.Length; ++i)
@@ -50,6 +50,28 @@ namespace DES_lib
 			DWORD res = CD << shift;
 			res |= CD >> (28 - shift);
 			return res;
+		}
+
+		public static byte[] QWORDToBytes(QWORD[] qwaCipher)
+		{
+			List<byte> blCipher = new List<byte>();
+			foreach (QWORD qwToken in qwaCipher)
+			{
+				byte[] bToken = BitConverter.GetBytes(qwToken);
+				blCipher.AddRange(bToken);
+			}
+			return blCipher.ToArray();
+		}
+
+		public static byte[] QWORDToBytes_CFB(QWORD[] qwaCipher)
+		{
+			List<byte> blCipher = new List<byte>();
+			foreach(QWORD qwToken in qwaCipher)
+			{
+				byte bToken = (byte)qwToken;
+				blCipher.Add(bToken);
+			}
+			return blCipher.ToArray();
 		}
 	}
 }

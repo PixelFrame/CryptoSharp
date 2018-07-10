@@ -61,6 +61,11 @@ namespace ByteString_lib
 			return _byteStr.ToArray();
 		}
 
+		public int GetLength()
+		{
+			return _byteStr.Count;
+		}
+
 		public override string ToString()
 		{
 			return new string(Encoding.UTF8.GetChars(_byteStr.ToArray()));

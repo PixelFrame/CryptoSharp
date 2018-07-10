@@ -135,19 +135,19 @@ namespace DES_lib
 			}
 		};
 
-		private static QWORD mask64(QWORD num, int pos)
+		private static QWORD Mask64(QWORD num, int pos)
 		{
-			QWORD mask = 0x8000000000000000;
-			mask = mask >> pos;
-			num = mask & num;
+			QWORD Mask = 0x8000000000000000;
+			Mask = Mask >> pos;
+			num = Mask & num;
 			return num;
 		}
 
-		private static DWORD mask32(DWORD num, int pos)
+		private static DWORD Mask32(DWORD num, int pos)
 		{
-			DWORD mask = 0x80000000;
-			mask = mask >> pos;
-			num = mask & num;
+			DWORD Mask = 0x80000000;
+			Mask = Mask >> pos;
+			num = Mask & num;
 			return num;
 		}
 
@@ -156,11 +156,11 @@ namespace DES_lib
 			QWORD output = 0;
 			for (int i = 0; i < 64; ++i)
 			{
-				QWORD mask = mask64(input, IP[i] - 1);
+				QWORD Mask = Mask64(input, IP[i] - 1);
 				int shift = IP[i] - 1 - i;
-				if (shift > 0) mask <<= shift;
-				else mask >>= (0 - shift);
-				output = output ^ mask;
+				if (shift > 0) Mask <<= shift;
+				else Mask >>= (0 - shift);
+				output = output ^ Mask;
 			}
 			return output;
 		}
@@ -170,11 +170,11 @@ namespace DES_lib
 			QWORD output = 0;
 			for (int i = 0; i < 56; ++i)
 			{
-				QWORD mask = mask64(input, PC1[i] - 1);
+				QWORD Mask = Mask64(input, PC1[i] - 1);
 				int shift = PC1[i] - 1 - i;
-				if (shift > 0) mask <<= shift;
-				else mask >>= (0 - shift);
-				output = output ^ mask;
+				if (shift > 0) Mask <<= shift;
+				else Mask >>= (0 - shift);
+				output = output ^ Mask;
 			}
 			return output;
 		}
@@ -184,11 +184,11 @@ namespace DES_lib
 			QWORD output = 0;
 			for (int i = 0; i < 48; ++i)
 			{
-				QWORD mask = mask64(input, PC2[i] - 1);
+				QWORD Mask = Mask64(input, PC2[i] - 1);
 				int shift = PC2[i] - 1 - i;
-				if (shift > 0) mask <<= shift;
-				else mask >>= (0 - shift);
-				output = output ^ mask;
+				if (shift > 0) Mask <<= shift;
+				else Mask >>= (0 - shift);
+				output = output ^ Mask;
 			}
 			return output;
 		}
@@ -199,11 +199,11 @@ namespace DES_lib
 			QWORD output = 0;
 			for (int i = 0; i < 48; ++i)
 			{
-				QWORD mask = mask64(input, E[i] - 1);
+				QWORD Mask = Mask64(input, E[i] - 1);
 				int shift = E[i] - 1 - i;
-				if (shift > 0) mask <<= shift;
-				else mask >>= (0 - shift);
-				output = output ^ mask;
+				if (shift > 0) Mask <<= shift;
+				else Mask >>= (0 - shift);
+				output = output ^ Mask;
 			}
 			return output;
 		}
@@ -227,11 +227,11 @@ namespace DES_lib
 			DWORD output = 0;
 			for (int i = 0; i < 32; ++i)
 			{
-				DWORD mask = mask32(input, P[i] - 1);
+				DWORD Mask = Mask32(input, P[i] - 1);
 				int shift = P[i] - 1 - i;
-				if (shift > 0) mask <<= shift;
-				else mask >>= (0 - shift);
-				output = output ^ mask;
+				if (shift > 0) Mask <<= shift;
+				else Mask >>= (0 - shift);
+				output = output ^ Mask;
 			}
 			return output;
 		}
@@ -241,11 +241,11 @@ namespace DES_lib
 			QWORD output = 0;
 			for (int i = 0; i < 64; ++i)
 			{
-				QWORD mask = mask64(input, IP_T[i] - 1);
+				QWORD Mask = Mask64(input, IP_T[i] - 1);
 				int shift = IP_T[i] - 1 - i;
-				if (shift > 0) mask <<= shift;
-				else mask >>= (0 - shift);
-				output = output ^ mask;
+				if (shift > 0) Mask <<= shift;
+				else Mask >>= (0 - shift);
+				output = output ^ Mask;
 			}
 			return output;
 		}

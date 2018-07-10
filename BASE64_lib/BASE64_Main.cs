@@ -32,7 +32,7 @@ namespace BASE64_lib
 			-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2
 		};
 
-		public static String Encrypt(byte[] bPlain)
+		public static byte[] EncryptB(byte[] bPlain)
 		{
 			ByteString bsEnc = new ByteString();
 			int bytes = bPlain.Length, current = 0;
@@ -60,35 +60,34 @@ namespace BASE64_lib
 					bsEnc += base64Pad;
 				}
 			}
-			return bsEnc.ToString();
+			return bsEnc.GetBytes();
 		}
 
-		public static String Encrypt(String strPlain, String coding)
+		public static String EncryptS(String strPlain, String coding)
 		{
 			byte[] bPlain = Encoding.GetEncoding(coding).GetBytes(strPlain);
-			return Encrypt(bPlain);
+			return new String(Encoding.GetEncoding(coding).GetChars(EncryptB(bPlain)));
 		}
 
-		public static String Encrypt(String strPlain, int coding)
+		public static String EncryptS(String strPlain, int coding)
 		{
 			byte[] bPlain = Encoding.GetEncoding(coding).GetBytes(strPlain);
-			return Encrypt(bPlain);
+			return new String(Encoding.GetEncoding(coding).GetChars(EncryptB(bPlain)));
 		}
 
-		public static byte[] Decode(String strEnc)
+		public static byte[] DecodeB(byte[] baEnc)
 		{
 			ByteString bsPlain = new ByteString();
-			byte[] baEnc = Encoding.UTF8.GetBytes(strEnc);
-			int current = 0, length = strEnc.Length, i = 0, bin = 0;
+			int current = 0, length = baEnc.Length, i = 0, bin = 0;
 			byte ch;
 			while (length-- > 0)
 			{
 				ch = baEnc[current++];
 				if (ch == base64Pad)
 				{
-					if (current < strEnc.Length)
+					if (current < baEnc.Length)
 					{
-						if (strEnc[current] != '=' && (i % 4) == 1)
+						if (baEnc[current] != base64Pad && (i % 4) == 1)
 						{
 							return null;
 						}
@@ -126,14 +125,16 @@ namespace BASE64_lib
 			return bsPlain.GetBytes();
 		}
 
-		public static String DecodeEncoding(String strEnc, String coding)
+		public static String DecodeS(String strEnc, String coding)
 		{
-			return new String(Encoding.GetEncoding(coding).GetChars(Decode(strEnc)));
+			byte[] baEnc = Encoding.GetEncoding(coding).GetBytes(strEnc);
+			return new String(Encoding.GetEncoding(coding).GetChars(DecodeB(baEnc)));
 		}
 
-		public static String DecodeEncoding(String strEnc, int coding)
+		public static String DecodeS(String strEnc, int coding)
 		{
-			return new String(Encoding.GetEncoding(coding).GetChars(Decode(strEnc)));
+			byte[] baEnc = Encoding.GetEncoding(coding).GetBytes(strEnc);
+			return new String(Encoding.GetEncoding(coding).GetChars(DecodeB(baEnc)));
 		}
 	}
 }
