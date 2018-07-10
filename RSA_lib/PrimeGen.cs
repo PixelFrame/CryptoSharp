@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
+using System.Numerics;
 
 namespace RSA_lib
 {
@@ -57,49 +58,31 @@ namespace RSA_lib
 			return a;
 		}
 
-		public ulong RepeatMod(ulong ulBase, ulong ulExponent, ulong ulMod)
+		public bool RabinMiller(ulong ulN, ulong ulK = 50)
 		{
-			ulong a = 1;
-			while(ulExponent!=0)
+			ulong s = 0, i = 1;
+			ulong t = ulN - 1;
+			while ((t & 1) == 0)
 			{
-				if ((ulExponent & 1) != 0)
-				{
-					a = (a * ulBase) % ulMod;
-				}
-				ulBase = (ulBase * ulBase) % ulMod;
-				ulExponent = ulExponent >> 1;
-			}
-			return a;
-		}
-
-		public bool RabinMiller(ulong ulN, ulong ulK)
-		{
-			ulong s = 0;
-			ulong temp = ulN - 1;
-			while ((temp & 1) == 0 && temp != 0)
-			{
-				temp = temp >> 1;
+				t >>= 1;
 				++s;
-			}   //将n-1表示为(2^s)*t
-			ulong t = temp;
+			}   //n-1 = (2^s)*t
 
 			while (ulK-- != 0)  //判断k轮误判概率不大于(1/4)^k
 			{
 				RNGCryptoServiceProvider csp = new RNGCryptoServiceProvider();
 				byte[] baCsp = new byte[8];
 				csp.GetNonZeroBytes(baCsp);
-				ulong b = BitConverter.ToUInt64(baCsp, 0) % (ulN - 2) + 2; //生成一个b(2≤a ≤n-2)
-				ulong y = RepeatMod(b, t, ulN);
-				if (y == 1 || y == (ulN - 1))
+				ulong b = BitConverter.ToUInt64(baCsp, 0) % (ulN - 3) + 2; //生成一个b(2≤a ≤n-2)
+				BigInteger y = RSA_Math.RepeatMod(b, t, ulN);
+				if (y == 1)
 					return true;
-				for (ulong j = 1; j <= (s - 1) && y != (ulN - 1); ++j)
+				while(y != ulN-1)
 				{
-					y = RepeatMod(y, 2, ulN);
-					if (y == 1)
-						return false;
+					if (i == s) return false;
+					y = RSA_Math.RepeatMod(y, 2, ulN);
+					++i;
 				}
-				if (y != (ulN - 1))
-					return false;
 			}
 			return true;
 		}
@@ -107,7 +90,7 @@ namespace RSA_lib
 		public ulong Gen(ulong ulTestRound = 50)
 		{
 			ulong a = PseudoPrime();
-			while(RabinMiller(a, ulTestRound))
+			while(!RabinMiller(a, ulTestRound))
 			{
 				a = PseudoPrime();
 			}
