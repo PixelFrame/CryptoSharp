@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RSA_lib
 {
-	class RSA_Data
+	public class RSA_Data
 	{
 	}
 }

@@ -8,9 +8,16 @@ using System.Numerics;
 
 namespace RSA_lib
 {
+	/// <summary>
+	/// 512位素数产生类
+	/// </summary>
 	public class PrimeGen
 	{
-		private static readonly ulong[] _PRIME_LIST = new ulong[]
+		/// <summary>
+		/// 3000以内的素数表
+		/// 来源：https://en.wikipedia.org/wiki/List_of_prime_numbers#The_first_1000_prime_numbers
+		/// </summary>
+		private static readonly BigInteger[] _PRIME_LIST = new BigInteger[]
 		{
 			2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71,
 			73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173,
@@ -35,18 +42,23 @@ namespace RSA_lib
 			2749, 2753, 2767, 2777, 2789, 2791, 2797, 2801, 2803, 2819, 2833, 2837, 2843, 2851, 2857, 2861, 2879, 2887, 2897, 2903,
 			2909, 2917, 2927, 2939, 2953, 2957, 2963, 2969, 2971, 2999
 		};
-		private ulong PseudoPrime()
+		/// <summary>
+		/// 伪素数产生
+		/// </summary>
+		/// <returns></returns>
+		private BigInteger PseudoPrime()
 		{
 			bool isPrime = false;
-			ulong a = 0;
+			BigInteger a = new BigInteger();
 			while (!isPrime)
 			{
 				RNGCryptoServiceProvider csp = new RNGCryptoServiceProvider();
-				byte[] baCsp = new byte[8];
+				byte[] baCsp = new byte[65];
 				csp.GetNonZeroBytes(baCsp);
+				baCsp[64] = 0;
 				isPrime = true;
-				a = BitConverter.ToUInt64(baCsp, 0);
-				foreach(ulong b in _PRIME_LIST)
+				a = new BigInteger(baCsp);
+				foreach (BigInteger b in _PRIME_LIST)
 				{ 
 					if (a % b == 0)
 					{
@@ -57,40 +69,50 @@ namespace RSA_lib
 			}
 			return a;
 		}
-
-		public bool RabinMiller(ulong ulN, ulong ulK = 50)
+		/// <summary>
+		/// Rabin-Miller素性检测
+		/// </summary>
+		/// <param name="biN">被检数</param>
+		/// <param name="iK">测试轮数 默认50</param>
+		/// <returns>true：biN为素数，false：biN不是素数</returns>
+		public bool RabinMiller(BigInteger biN, int iK = 50)
 		{
-			ulong s = 0, i = 1;
-			ulong t = ulN - 1;
+			if ((biN & 1) == 0) return false;
+			BigInteger s = 0, i = 1;
+			BigInteger t = biN - 1;
 			while ((t & 1) == 0)
 			{
 				t >>= 1;
 				++s;
-			}   //n-1 = (2^s)*t
+			}
 
-			while (ulK-- != 0)  //判断k轮误判概率不大于(1/4)^k
+			while (iK-- != 0)
 			{
 				RNGCryptoServiceProvider csp = new RNGCryptoServiceProvider();
 				byte[] baCsp = new byte[8];
 				csp.GetNonZeroBytes(baCsp);
-				ulong b = BitConverter.ToUInt64(baCsp, 0) % (ulN - 3) + 2; //生成一个b(2≤a ≤n-2)
-				BigInteger y = RSA_Math.RepeatMod(b, t, ulN);
+				BigInteger b = BitConverter.ToUInt64(baCsp, 0) % (biN - 2) + 2;
+				BigInteger y = RSA_Math.RepeatMod(b, t, biN);
 				if (y == 1)
 					return true;
-				while(y != ulN-1)
+				while(y != biN-1)
 				{
 					if (i == s) return false;
-					y = RSA_Math.RepeatMod(y, 2, ulN);
+					y = RSA_Math.RepeatMod(y, 2, biN);
 					++i;
 				}
 			}
 			return true;
 		}
-
-		public ulong Gen(ulong ulTestRound = 50)
+		/// <summary>
+		/// 素数生成方法，可指定测试轮数
+		/// </summary>
+		/// <param name="iTestRound">测试轮数 默认50</param>
+		/// <returns></returns>
+		public BigInteger Gen(int iTestRound = 50)
 		{
-			ulong a = PseudoPrime();
-			while(!RabinMiller(a, ulTestRound))
+			BigInteger a = PseudoPrime();
+			while(!RabinMiller(a, iTestRound))
 			{
 				a = PseudoPrime();
 			}

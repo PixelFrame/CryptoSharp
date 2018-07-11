@@ -7,8 +7,14 @@ using ByteString_lib;
 
 namespace BASE64_lib
 {
+	/// <summary>
+	/// BASE64加解密主要类
+	/// </summary>
 	public class BASE64_Main
 	{
+		/// <summary>
+		/// BASE64字符表
+		/// </summary>
 		static readonly byte[]	base64Table = Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 +/");
 		static readonly byte	base64Pad = Encoding.UTF8.GetBytes("=")[0];
 		static readonly byte[]	base64PadD = Encoding.UTF8.GetBytes("==");
@@ -31,7 +37,11 @@ namespace BASE64_lib
 			-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2,
 			-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2
 		};
-
+		/// <summary>
+		/// BASE64加密方法 输入/输出byte数组
+		/// </summary>
+		/// <param name="bPlain"></param>
+		/// <returns></returns>
 		public static byte[] EncryptB(byte[] bPlain)
 		{
 			ByteString bsEnc = new ByteString();
@@ -62,19 +72,33 @@ namespace BASE64_lib
 			}
 			return bsEnc.GetBytes();
 		}
-
+		/// <summary>
+		/// BASE64加密方法 输入/输出字符串 不改变字符串编码
+		/// </summary>
+		/// <param name="strPlain">明文字符串</param>
+		/// <param name="coding">字符串编码名称</param>
+		/// <returns>BASE64字符串</returns>
 		public static String EncryptS(String strPlain, String coding)
 		{
 			byte[] bPlain = Encoding.GetEncoding(coding).GetBytes(strPlain);
 			return new String(Encoding.GetEncoding(coding).GetChars(EncryptB(bPlain)));
 		}
-
+		/// <summary>
+		/// BASE64加密方法 输入/输出字符串 不改变字符串编码
+		/// </summary>
+		/// <param name="strPlain">明文字符串</param>
+		/// <param name="coding">字符串编码编号</param>
+		/// <returns>BASE64字符串</returns>
 		public static String EncryptS(String strPlain, int coding)
 		{
 			byte[] bPlain = Encoding.GetEncoding(coding).GetBytes(strPlain);
 			return new String(Encoding.GetEncoding(coding).GetChars(EncryptB(bPlain)));
 		}
-
+		/// <summary>
+		/// BASE64解密方法 输入/输出byte数组
+		/// </summary>
+		/// <param name="baEnc"></param>
+		/// <returns></returns>
 		public static byte[] DecodeB(byte[] baEnc)
 		{
 			ByteString bsPlain = new ByteString();
@@ -124,13 +148,23 @@ namespace BASE64_lib
 			}
 			return bsPlain.GetBytes();
 		}
-
+		/// <summary>
+		/// BASE64解密方法 输入/输出字符串 不改变字符串编码
+		/// </summary>
+		/// <param name="strPlain">BASE64字符串</param>
+		/// <param name="coding">字符串编码名称</param>
+		/// <returns>明文字符串</returns>
 		public static String DecodeS(String strEnc, String coding)
 		{
 			byte[] baEnc = Encoding.GetEncoding(coding).GetBytes(strEnc);
 			return new String(Encoding.GetEncoding(coding).GetChars(DecodeB(baEnc)));
 		}
-
+		/// <summary>
+		/// BASE64解密方法 输入/输出字符串 不改变字符串编码
+		/// </summary>
+		/// <param name="strPlain">BASE64字符串</param>
+		/// <param name="coding">字符串编码编号</param>
+		/// <returns>明文字符串</returns>
 		public static String DecodeS(String strEnc, int coding)
 		{
 			byte[] baEnc = Encoding.GetEncoding(coding).GetBytes(strEnc);

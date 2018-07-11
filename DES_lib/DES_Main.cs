@@ -10,11 +10,25 @@ using DWORD = System.UInt32;
 
 namespace DES_lib
 {
+	/// <summary>
+	/// 分组操作模式
+	///		0 ECB 电码本
+	///		1 CBC 密文分组链接
+	///		2 CFB 密文反馈
+	///		3 OFB 输出反馈
+	/// </summary>
 	public enum Mode { ECB = 0, CBC = 1, CFB = 2, OFB = 3 };
-
+	/// <summary>
+	/// DES加解密主要类
+	/// </summary>
 	public class DES_Main
     {
-
+		/// <summary>
+		/// DES主要加密方法 输入输出64位
+		/// </summary>
+		/// <param name="qwPlain">64bit明文</param>
+		/// <param name="qwKey">64bit密钥</param>
+		/// <returns>64bit密文</returns>
 		public static QWORD Encrypt(QWORD qwPlain, QWORD qwKey)
 		{
 			QWORD L0R0 = DES_Table.Swap_IP(qwPlain);
@@ -44,7 +58,12 @@ namespace DES_lib
 			QWORD qwCipher = DES_Table.Swap_T_IP(R16L16);
 			return qwCipher;
 		}
-
+		/// <summary>
+		/// DES主要解密方法 输入输出64位
+		/// </summary>
+		/// <param name="qwCipher">64bit密文</param>
+		/// <param name="qwKey">64bit密钥</param>
+		/// <returns>64bit明文</returns>
 		public static QWORD Decrypt(QWORD qwCipher, QWORD qwKey)
 		{
 			QWORD L16R16 = DES_Table.Swap_IP(qwCipher);
@@ -78,7 +97,14 @@ namespace DES_lib
 			QWORD qwPlain = DES_Table.Swap_T_IP(L0R0);
 			return qwPlain;
 		}
-
+		/// <summary>
+		/// DES分组加密方法 输入byte数组 返回ulong数组 CFB模式返回ulong的有效位数仅为8位
+		/// </summary>
+		/// <param name="baPlain">明文byte数组</param>
+		/// <param name="qwKey">64bit密钥</param>
+		/// <param name="qwIV">64bit初始化向量，ECB模式无效</param>
+		/// <param name="mode">操作模式</param>
+		/// <returns>密文byte数组</returns>
 		public static QWORD[] EncryptBlockQ(byte[] baPlain, QWORD qwKey, QWORD qwIV, Mode mode)
 		{
 			List<QWORD> qwlCipher = new List<QWORD>();
@@ -136,13 +162,27 @@ namespace DES_lib
 			}
 			return qwlCipher.ToArray();
 		}
-
+		/// <summary>
+		/// DES分组加密方法 输入byte数组 返回byte数组
+		/// </summary>
+		/// <param name="baPlain">输入byte数组</param>
+		/// <param name="qwKey">64bit密钥</param>
+		/// <param name="qwIV">64bit初始化向量，ECB模式无效</param>
+		/// <param name="mode">操作模式</param>
+		/// <returns>密文byte数组</returns>
 		public static byte[] EncryptBlockB(byte[] baPlain, QWORD qwKey, QWORD qwIV, Mode mode)
 		{
 			if (mode == Mode.CFB) return DES_Convert.QWORDToBytes_CFB(EncryptBlockQ(baPlain, qwKey, qwIV, mode));
 			return DES_Convert.QWORDToBytes(EncryptBlockQ(baPlain, qwKey, qwIV, mode));
 		}
-
+		/// <summary>
+		/// DES分组解密方法 输入byte数组 输出ulong数组 CFB模式返回ulong的有效位数仅为8位
+		/// </summary>
+		/// <param name="baCipher">明文byte数组</param>
+		/// <param name="qwKey">64bit密钥</param>
+		/// <param name="qwIV">64bit初始化向量，ECB模式无效</param>
+		/// <param name="mode">操作模式</param>
+		/// <returns>密文ulong数组</returns>
 		public static QWORD[] DecryptBlockQ(byte[] baCipher, QWORD qwKey, QWORD qwIV, Mode mode)
 		{
 			List<QWORD> qwlPlain = new List<QWORD>();
@@ -201,11 +241,18 @@ namespace DES_lib
 			}
 			return qwlPlain.ToArray();
 		}
-
+		/// <summary>
+		/// DES分组解密方法 输入byte数组 返回byte数组
+		/// </summary>
+		/// <param name="baCipher">明文byte数组</param>
+		/// <param name="qwKey">64bit密钥</param>
+		/// <param name="qwIV">64bit初始化向量，ECB模式无效</param>
+		/// <param name="mode">操作模式</param>
+		/// <returns>密文byte数组</returns>
 		public static byte[] DecryptBlockB(byte[] baCipher, QWORD qwKey, QWORD qwIV, Mode mode)
 		{
 			if (mode == Mode.CFB) return DES_Convert.QWORDToBytes_CFB(DecryptBlockQ(baCipher, qwKey, qwIV, mode));
 			return DES_Convert.QWORDToBytes(DecryptBlockQ(baCipher, qwKey, qwIV, mode));
 		}
-    }
+	}
 }

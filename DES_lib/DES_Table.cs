@@ -9,6 +9,9 @@ using DWORD = System.UInt32;
 
 namespace DES_lib
 {
+	/// <summary>
+	/// DES替换表
+	/// </summary>
     class DES_Table
     {
 		private readonly static int[] PC1 =
@@ -134,7 +137,12 @@ namespace DES_lib
 				{ 2,  1, 14,  7,  4, 10,  8, 13, 15, 12,  9,  0,  3,  5,  6, 11 }
 			}
 		};
-
+		/// <summary>
+		/// 对ulong进行mask，保留指定位的数据
+		/// </summary>
+		/// <param name="num"></param>
+		/// <param name="pos"></param>
+		/// <returns></returns>
 		private static QWORD Mask64(QWORD num, int pos)
 		{
 			QWORD Mask = 0x8000000000000000;
@@ -142,7 +150,12 @@ namespace DES_lib
 			num = Mask & num;
 			return num;
 		}
-
+		/// <summary>
+		/// 对uint进行mask，保留指定位的数据
+		/// </summary>
+		/// <param name="num"></param>
+		/// <param name="pos"></param>
+		/// <returns></returns>
 		private static DWORD Mask32(DWORD num, int pos)
 		{
 			DWORD Mask = 0x80000000;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using BASE64_lib;
 using DES_lib;
@@ -11,6 +12,7 @@ using RSA_lib;
 
 namespace CryptoTest
 {
+	[TestClass]
 	class Program
 	{
 		static void Main(string[] args)
@@ -57,7 +59,7 @@ namespace CryptoTest
 				}
 			} while (cki.Key != ConsoleKey.Escape && cki.Key != ConsoleKey.Enter);
 		}
-
+		[TestMethod]
 		static void BASE64_TEST()
 		{
 			string str = "简体中文\n繁體中文\nカタカナ\nひらがな\nEnglish\n12345";
@@ -71,7 +73,7 @@ namespace CryptoTest
 			Console.Out.WriteLine("UTF-16LE: " + strEnc);
 			Console.Out.WriteLine(BASE64_Main.DecodeS(strEnc, "UTF-16"));
 		}
-
+		[TestMethod]
 		static void DES_BASIC_TEST()
 		{
 			UInt64 plain = 0x0123456789ABCDEF;
@@ -79,25 +81,46 @@ namespace CryptoTest
 			Console.Out.WriteLine("{0:X16}", cipher);
 			Console.Out.WriteLine("{0:X16}", DES_Main.Decrypt(cipher, plain));
 		}
-
+		[TestMethod]
 		static void PRIME_GEN_TEST()
 		{
 			PrimeGen primeGen = new PrimeGen();
-			ulong prime = primeGen.Gen();
+			BigInteger prime = primeGen.Gen();
 			Console.Out.WriteLine(prime);
 		}
-
+		[TestMethod]
+		[ExpectedException(typeof(NotPrimeNumberException))]
 		static void RSA_BASIC_TEST()
 		{
+			////////////////Generate RSA Key////////////////
 			BigInteger[] RSA_key = RSA_Main.GenKey();
-			Console.WriteLine("n: {0:D}\te: {0:D}\td: {0:D}", RSA_key[0], RSA_key[1], RSA_key[2]);
-			BigInteger[] testArr = new BigInteger[] { 10000000, 111111111, 2222222222, 9999999 };
+			Console.WriteLine("n: {0:D}\ne: {1:D}\nd: {2:D}", RSA_key[0], RSA_key[1], RSA_key[2]);
+			
+			//////////////Maximum Number Test///////////////
+			byte[] testNumB = new byte[65];
+			for (int i = 0; i < 65; ++i) testNumB[i] = 0xFF;
+			BigInteger testNumMax = new BigInteger(testNumB);
+			BigInteger[] testArr = new BigInteger[] { 123456789, 0xABCDEF, 1145141919810, 0xFFFFFFFF, testNumMax };
+
+			//////////////Encrypt and Decrypt///////////////
 			foreach (BigInteger bi in testArr)
 			{
-				Console.WriteLine(RSA_Main.Decrypt(RSA_Main.Encrypt(bi, RSA_key[1], RSA_key[0]), RSA_key[2], RSA_key[0]));
+				Console.WriteLine("Result: " + RSA_Main.Decrypt(RSA_Main.Encrypt(bi, RSA_key[1], RSA_key[0]), RSA_key[2], RSA_key[0]));
+			}
+
+			//////Manual Param and Not Prime Exception//////
+			try
+			{
+				RSA_Main.GenKey(3, 22);
+			}
+			catch(NotPrimeNumberException e)
+			{
+				Console.WriteLine("\n!----------------------------------------------------------------------------------!\n" +
+					"!  NotPrimeNumberException: {0:D} is not a prime number.    !" +
+					"\n!----------------------------------------------------------------------------------!", e.errNum);
 			}
 		}
-
+		[TestMethod]
 		static void DES_BLOCK_TEST()
 		{
 			string strPlain = 

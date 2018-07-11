@@ -9,8 +9,16 @@ using DWORD = System.UInt32;
 
 namespace DES_lib
 {
+	/// <summary>
+	/// DES转换类
+	/// </summary>
     class DES_Convert
     {
+		/// <summary>
+		/// 二进制数字符串转换为ulong数据
+		/// </summary>
+		/// <param name="str"></param>
+		/// <returns></returns>
 		public static QWORD BinStringToQWORD(String str)
 		{
 			QWORD output = 0;
@@ -20,7 +28,11 @@ namespace DES_lib
 			}
 			return output;
 		}
-
+		/// <summary>
+		/// 16进制字符串转换为ulong数据
+		/// </summary>
+		/// <param name="str"></param>
+		/// <returns></returns>
 		public static QWORD HexStringToQWORD(String str)
 		{
 			QWORD output = 0;
@@ -44,14 +56,23 @@ namespace DES_lib
 			}
 			return output;
 		}
-
+		/// <summary>
+		/// 以28为周期循环右移，输入为uint
+		/// </summary>
+		/// <param name="CD"></param>
+		/// <param name="shift"></param>
+		/// <returns></returns>
 		public static DWORD RoundShiftLeft28(DWORD CD, int shift)
 		{
 			DWORD res = CD << shift;
 			res |= CD >> (28 - shift);
 			return res;
 		}
-
+		/// <summary>
+		/// 将ulong数组转换为byte数组 每个ulong分为4个byte
+		/// </summary>
+		/// <param name="qwaCipher"></param>
+		/// <returns></returns>
 		public static byte[] QWORDToBytes(QWORD[] qwaCipher)
 		{
 			List<byte> blCipher = new List<byte>();
@@ -62,7 +83,11 @@ namespace DES_lib
 			}
 			return blCipher.ToArray();
 		}
-
+		/// <summary>
+		/// 将CFB模式加解密结果的ulong数组转换为byte数组 每个ulong保留最低8位
+		/// </summary>
+		/// <param name="qwaCipher"></param>
+		/// <returns></returns>
 		public static byte[] QWORDToBytes_CFB(QWORD[] qwaCipher)
 		{
 			List<byte> blCipher = new List<byte>();

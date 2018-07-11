@@ -263,3 +263,4 @@ __pycache__/
 *.psd
 Step*.md
 NonGit/
+*.licenseheader
