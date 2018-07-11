@@ -5,13 +5,13 @@ using System.Runtime.InteropServices;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("CryptoTest")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyTitle("CryptoSharp Test Console")]
+[assembly: AssemblyDescription("Console Application for CryptoSharp Utility Testing")]
+[assembly: AssemblyConfiguration("Debug")]
+[assembly: AssemblyCompany("Pixel Frame Dev.")]
 [assembly: AssemblyProduct("CryptoTest")]
-[assembly: AssemblyCopyright("Copyright ©  2018")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Copyright © Pixel Frame 2018")]
+[assembly: AssemblyTrademark("Pixel Frame Dev.")]
 [assembly: AssemblyCulture("")]
 
 // 将 ComVisible 设置为 false 会使此程序集中的类型

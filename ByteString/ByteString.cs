@@ -31,6 +31,14 @@ namespace ByteString_lib
 			_byteStr = new List<byte>(byteStr);
 		}
 		/// <summary>
+		/// 指定初始长度的构造方法
+		/// </summary>
+		/// <param name="len">初始长度</param>
+		public ByteString(int len)
+		{
+			_byteStr = new List<byte>(len);
+		}
+		/// <summary>
 		/// 重载 + 同类型相加
 		/// </summary>
 		/// <param name="bsParam0"></param>

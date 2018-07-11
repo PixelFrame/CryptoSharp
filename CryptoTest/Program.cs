@@ -25,7 +25,8 @@ namespace CryptoTest
 								"2: DES_BASIC\n" +
 								"3: PRIME_GEN\n" +
 								"4: RSA_BASIC\n" +
-								"5: DES_BLOCK");
+								"5: DES_BLOCK\n" +
+								"6: RSA_PKCS#1");
 				cki = Console.ReadKey();
 				switch (cki.KeyChar)
 				{
@@ -52,6 +53,11 @@ namespace CryptoTest
 					case '5':
 						Console.WriteLine("\n************TEST_START************");
 						DES_BLOCK_TEST();
+						Console.WriteLine("\n************TEST_FINISHED************");
+						break;
+					case '6':
+						Console.WriteLine("\n************TEST_START************");
+						RSA_PKCS1_TEST();
 						Console.WriteLine("\n************TEST_FINISHED************");
 						break;
 					default:
@@ -93,7 +99,7 @@ namespace CryptoTest
 		static void RSA_BASIC_TEST()
 		{
 			////////////////Generate RSA Key////////////////
-			BigInteger[] RSA_key = RSA_Main.GenKey();
+			BigInteger[] RSA_key = RSA_Gen.GenKey();
 			Console.WriteLine("n: {0:D}\ne: {1:D}\nd: {2:D}", RSA_key[0], RSA_key[1], RSA_key[2]);
 			
 			//////////////Maximum Number Test///////////////
@@ -111,7 +117,7 @@ namespace CryptoTest
 			//////Manual Param and Not Prime Exception//////
 			try
 			{
-				RSA_Main.GenKey(3, 22);
+				RSA_Gen.GenKey(3, 22);
 			}
 			catch(NotPrimeNumberException e)
 			{
@@ -145,6 +151,13 @@ namespace CryptoTest
 				Console.WriteLine(Encoding.Unicode.GetChars(baResult));
 				Console.WriteLine("**************************************************");
 			}
+		}
+		[TestMethod]
+		static void RSA_PKCS1_TEST()
+		{
+			byte[] pkcs_key = RSA_Gen.PKCS1_Pri_Gen();
+			string str_key = new string(Encoding.UTF8.GetChars(BASE64_Main.EncryptB(pkcs_key)));
+			Console.WriteLine(str_key);
 		}
 	}
 }

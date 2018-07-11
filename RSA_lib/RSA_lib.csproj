@@ -41,11 +41,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ASN1_Convert.cs" />
+    <Compile Include="RSA_Gen.cs" />
     <Compile Include="PrimeGen.cs" />
     <Compile Include="RSA_Data.cs" />
     <Compile Include="RSA_Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RSA_Math.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ByteString\ByteString_lib.csproj">
+      <Project>{4da0eca0-b019-480f-9468-f58277b5fef5}</Project>
+      <Name>ByteString_lib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

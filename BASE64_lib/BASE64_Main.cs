@@ -15,7 +15,7 @@ namespace BASE64_lib
 		/// <summary>
 		/// BASE64字符表
 		/// </summary>
-		static readonly byte[]	base64Table = Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 +/");
+		static readonly byte[]	base64Table = Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
 		static readonly byte	base64Pad = Encoding.UTF8.GetBytes("=")[0];
 		static readonly byte[]	base64PadD = Encoding.UTF8.GetBytes("==");
 		static readonly int[]	decodeTable =
