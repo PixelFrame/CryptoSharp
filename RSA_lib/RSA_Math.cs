@@ -7,10 +7,21 @@ using System.Numerics;
 
 namespace RSA_lib
 {
+	/// <summary>
+	/// RSA大数运算类
+	/// </summary>
 	class RSA_Math
 	{
+		/// <summary>
+		/// 幂次取模运算
+		/// </summary>
+		/// <param name="ulBase"></param>
+		/// <param name="ulExponent"></param>
+		/// <param name="ulMod"></param>
+		/// <returns></returns>
 		public static BigInteger RepeatMod(BigInteger ulBase, BigInteger ulExponent, BigInteger ulMod)
 		{
+			if (ulBase.Sign != 1 || ulExponent.Sign != 1 || ulExponent.Sign != 1) throw new NegativeParamException();
 			BigInteger a = 1;
 			while (ulExponent != 0)
 			{
@@ -23,7 +34,12 @@ namespace RSA_lib
 			}
 			return a;
 		}
-
+		/// <summary>
+		/// Stein最大公约数
+		/// </summary>
+		/// <param name="biParam0"></param>
+		/// <param name="biParam1"></param>
+		/// <returns></returns>
 		public static BigInteger SteinGCD(BigInteger biParam0, BigInteger biParam1)
 		{
 			BigInteger a = biParam0 > biParam1 ? biParam0 : biParam1;
@@ -62,7 +78,12 @@ namespace RSA_lib
 				return r * a;
 			}
 		}
-
+		/// <summary>
+		/// 扩展欧几里得算法
+		/// </summary>
+		/// <param name="biParam0"></param>
+		/// <param name="biParam1"></param>
+		/// <returns></returns>
 		public static BigInteger ExEuclid(BigInteger biParam0, BigInteger biParam1)
 		{
 			BigInteger m, e, i, j, x, y;
@@ -94,6 +115,11 @@ namespace RSA_lib
 				x = biParam1 - x;
 			return x;
 		}
+	}
 
+	public class NegativeParamException : Exception
+	{
+		private readonly string message = "Input BigNumber Parameter is Negative.";
+		public override string Message => message;
 	}
 }

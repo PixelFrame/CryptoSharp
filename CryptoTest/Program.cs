@@ -15,6 +15,7 @@ namespace CryptoTest
 	[TestClass]
 	class Program
 	{
+		[TestInitialize]
 		static void Main(string[] args)
 		{
 			ConsoleKeyInfo cki;
@@ -104,7 +105,7 @@ namespace CryptoTest
 			
 			//////////////Maximum Number Test///////////////
 			byte[] testNumB = new byte[65];
-			for (int i = 0; i < 65; ++i) testNumB[i] = 0xFF;
+			for (int i = 0; i < 64; ++i) testNumB[i] = 0xFF;
 			BigInteger testNumMax = new BigInteger(testNumB);
 			BigInteger[] testArr = new BigInteger[] { 123456789, 0xABCDEF, 1145141919810, 0xFFFFFFFF, testNumMax };
 
@@ -153,11 +154,47 @@ namespace CryptoTest
 			}
 		}
 		[TestMethod]
+		[ExpectedException(typeof(RSAKeyFormatErrorException))]
 		static void RSA_PKCS1_TEST()
 		{
-			byte[] pkcs_key = RSA_Gen.PKCS1_Pri_Gen();
-			string str_key = new string(Encoding.UTF8.GetChars(BASE64_Main.EncryptB(pkcs_key)));
+			string str_key = RSA_Gen.PKCS1_Pri_Gen_S();
 			Console.WriteLine(str_key);
+			BigInteger[] RSA_key = RSA_Read.PKCS1_Pri_Read(str_key);
+			foreach(BigInteger bi in RSA_key)
+			{
+				Console.WriteLine("{0:X}", bi);
+			}
+			string str_pub_key = RSA_Gen.PKCS1_Pub_Gen_S(str_key);
+			Console.WriteLine(str_pub_key);
+
+			Console.WriteLine("************************************************");
+			string strPlain =
+				"C#[b] (/si: ʃɑːrp/) is a multi-paradigm programming language " +
+				"encompassing strong typing, imperative, declarative, functional," +
+				" generic, object-oriented (class-based), and component-oriented " +
+				"programming disciplines. It was developed around 2000 by Micros" +
+				"oft within its .NET initiative and later approved as a standard" +
+				" by Ecma (ECMA-334) and ISO (ISO/IEC 23270:2006). C# is one of " +
+				"the programming languages designed for the Common Language Infr" +
+				"astructure.C# is a general-purpose, object-oriented programming " +
+				"language. Its development team is led by Anders Hejlsberg. The m" +
+				"ost recent version is C# 7.3, which was released in 2018 alongsi" +
+				"de Visual Studio 2017 version 15.7.2.";
+			string strCipher = RSA_Main.Encrypt_PKCS1_S(str_pub_key, strPlain, "UTF-8");
+			Console.WriteLine(strCipher);
+			Console.WriteLine("");
+			string strResult = RSA_Main.Decrypt_PKCS1_S(str_key, strCipher, "UTF-8");
+			Console.WriteLine(strResult);
+
+			str_key = "NOT A PKCS#1 KEY.";
+			try
+			{
+				RSA_Read.PKCS1_Pri_Read(str_key);
+			}
+			catch (RSAKeyFormatErrorException e)
+			{
+				Console.WriteLine(e.errInfo);
+			}
 		}
 	}
 }

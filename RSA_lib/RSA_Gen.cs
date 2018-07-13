@@ -5,12 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
 using ByteString_lib;
+using BASE64_lib;
 
 namespace RSA_lib
 {
+	/// <summary>
+	/// RSA密钥生成类
+	/// </summary>
 	public class RSA_Gen
 	{
-
 		/// <summary>
 		/// RSA密钥生成方法
 		/// </summary>
@@ -88,8 +91,8 @@ namespace RSA_lib
 
 			ByteString priKey = new ByteString();
 			ASN1_Convert asn1 = new ASN1_Convert();
-			priKey += asn1.IntToBytes(0);
-			priKey += asn1.BigIntToBytes(RSA_Key[0]);   // n
+			priKey += asn1.IntToBytes(0);				// Version
+			priKey += asn1.BigIntToBytes(RSA_Key[0], 128);   // n
 			priKey += asn1.BigIntToBytes(RSA_Key[1]);   // e
 			priKey += asn1.BigIntToBytes(RSA_Key[2]);   // d
 			priKey += asn1.BigIntToBytes(RSA_Key[3]);   // p
@@ -106,9 +109,88 @@ namespace RSA_lib
 		/// </summary>
 		/// <param name="biN"></param>
 		/// <param name="biE"></param>
-		public static void PKCS1_Pub_Gen()
+		public static byte[] PKCS1_Pub_Gen(BigInteger n, BigInteger e)
 		{
-
+			ByteString pubKey = new ByteString();
+			ASN1_Convert asn1 = new ASN1_Convert();
+			pubKey += asn1.BigIntToBytes(n, 128);
+			pubKey += asn1.BigIntToBytes(e);
+			pubKey = asn1.SeqToBytes(pubKey.GetBytes());
+			return pubKey.GetBytes();
+		}
+		/// <summary>
+		/// 通过PKCS#1格式私钥生成公钥
+		/// </summary>
+		/// <param name="baPKCS1Pri"></param>
+		/// <returns></returns>
+		public static byte[] PKCS1_Pub_Gen(byte[] baPKCS1Pri)
+		{
+			BigInteger[] RSA_Key = RSA_Read.PKCS1_Read(baPKCS1Pri);
+			return PKCS1_Pub_Gen(RSA_Key[1], RSA_Key[2]);
+		}
+		/// <summary>
+		/// 通过PKCS#1格式私钥生成公钥
+		/// </summary>
+		/// <param name="strPKCS1Pri"></param>
+		/// <returns></returns>
+		public static byte[] PKCS1_Pub_Gen(string strPKCS1Pri)
+		{
+			BigInteger[] RSA_Key = RSA_Read.PKCS1_Pub_Read(strPKCS1Pri);
+			return PKCS1_Pub_Gen(RSA_Key[1], RSA_Key[2]);
+		}
+		/// <summary>
+		/// 按PKCS#1格式生成RSA私钥并进行BASE64转换
+		/// </summary>
+		/// <returns></returns>
+		public static string PKCS1_Pri_Gen_S()
+		{
+			string strPKCS = new string(Encoding.UTF8.GetChars(BASE64_Main.EncryptB(PKCS1_Pri_Gen())));
+			int count = 64;
+			while (count < strPKCS.Length)
+			{
+				strPKCS = strPKCS.Insert(count, "\n");
+				count += 65;
+			}
+			strPKCS = "-----BEGIN RSA PRIVATE KEY-----\n" + strPKCS + "\n-----END RSA PRIVATE KEY-----\n";
+			return strPKCS;
+		}
+		/// <summary>
+		/// 按PKCS#1格式生成RSA公钥并进行BASE64转换
+		/// </summary>
+		/// <param name="n"></param>
+		/// <param name="e"></param>
+		/// <returns></returns>
+		public static string PKCS1_Pub_Gen_S(BigInteger n, BigInteger e)
+		{
+			string strPKCS = new string(Encoding.UTF8.GetChars(BASE64_Main.EncryptB(PKCS1_Pub_Gen(n, e))));
+			int count = 64;
+			while (count < strPKCS.Length)
+			{
+				strPKCS = strPKCS.Insert(count, "\n");
+				count += 65;
+			}
+			strPKCS = "-----BEGIN PUBLIC KEY-----\n" + strPKCS + "\n-----END PUBLIC KEY-----\n";
+			return strPKCS;
+		}
+		/// <summary>
+		/// 通过PKCS#1格式私钥生成公钥并进行BASE64转换
+		/// </summary>
+		/// <param name="baPKCS1Pri"></param>
+		/// <returns></returns>
+		public static string PKCS1_Pub_Gen_S(byte[] baPKCS1Pri)
+		{
+			BigInteger[] RSA_Key = RSA_Read.PKCS1_Read(baPKCS1Pri);
+			return PKCS1_Pub_Gen_S(RSA_Key[1], RSA_Key[2]);
+		}
+		/// <summary>
+		/// 通过PKCS#1格式私钥生成公钥并进行BASE64转换
+		/// </summary>
+		/// <param name="strPKCS1Pri"></param>
+		/// <returns></returns>
+		public static string PKCS1_Pub_Gen_S(string strPKCS1Pri)
+		{
+			BigInteger[] RSA_Key = RSA_Read.PKCS1_Pri_Read(strPKCS1Pri);
+			return PKCS1_Pub_Gen_S(RSA_Key[1], RSA_Key[2]);
 		}
 	}
 

@@ -120,5 +120,35 @@ namespace ByteString_lib
 		{
 			return new string(Encoding.UTF8.GetChars(_byteStr.ToArray()));
 		}
+		/// <summary>
+		/// 删除指定位置
+		/// </summary>
+		/// <param name="pos"></param>
+		/// <returns></returns>
+		public bool RemoveAt(int pos)
+		{
+			try
+			{
+				_byteStr.RemoveAt(pos);
+				return true;
+			}
+			catch(ArgumentOutOfRangeException)
+			{
+				return false;
+			}
+		}
+		/// <summary>
+		/// 删除最后一个byte，如果长度为0则返回false
+		/// </summary>
+		/// <returns></returns>
+		public bool RemoveLast()
+		{
+			if (_byteStr.Count > 0)
+			{
+				_byteStr.RemoveAt(_byteStr.Count - 1);
+				return true;
+			}
+			return false;
+		}
 	}
 }

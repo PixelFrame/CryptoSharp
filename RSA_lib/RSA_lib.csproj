@@ -48,8 +48,13 @@
     <Compile Include="RSA_Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RSA_Math.cs" />
+    <Compile Include="RSA_Read.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BASE64_lib\BASE64_lib.csproj">
+      <Project>{2254a738-63ac-4be4-8254-0b7820eee0b0}</Project>
+      <Name>BASE64_lib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ByteString\ByteString_lib.csproj">
       <Project>{4da0eca0-b019-480f-9468-f58277b5fef5}</Project>
       <Name>ByteString_lib</Name>
