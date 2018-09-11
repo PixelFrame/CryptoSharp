@@ -150,5 +150,16 @@ namespace ByteString_lib
 			}
 			return false;
 		}
+		/// <summary>
+		/// 交换指定的两个位置
+		/// </summary>
+		/// <param name="idx0"></param>
+		/// <param name="idx1"></param>
+		public void Swap(int idx0, int idx1)
+		{
+			byte temp = _byteStr[idx1];
+			_byteStr[idx1] = _byteStr[idx0];
+			_byteStr[idx0] = temp;
+		}
 	}
 }

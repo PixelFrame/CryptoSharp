@@ -16,8 +16,10 @@ namespace DES_lib
 	///		1 CBC 密文分组链接
 	///		2 CFB 密文反馈
 	///		3 OFB 输出反馈
+	///		4 PCBC 扩散密文分组链接
+	///		5 CTR 计数器(未实现)
 	/// </summary>
-	public enum Mode { ECB = 0, CBC = 1, CFB = 2, OFB = 3 };
+	public enum Mode { ECB = 0, CBC = 1, CFB = 2, OFB = 3, PCBC = 4, CTR = 5};
 	/// <summary>
 	/// DES加解密主要类
 	/// </summary>
@@ -159,6 +161,20 @@ namespace DES_lib
 						--count;
 					}
 					break;
+				case Mode.PCBC:
+					part = (int)Math.Ceiling(bsPlain.GetLength() / 8.0);
+					count = part;
+					rem = 8 - (bsPlain.GetLength() % 8);
+					bsPlain += new byte[rem];
+					while (count > 0)
+					{
+						QWORD qwPlain = BitConverter.ToUInt64(bsPlain.GetBytes(), (part - count) * 8);
+						qwIV = Encrypt(qwPlain ^ qwIV, qwKey);
+						qwlCipher.Add(qwIV);
+						qwIV ^= qwPlain;
+						--count;
+					}
+					break;
 			}
 			return qwlCipher.ToArray();
 		}
@@ -235,6 +251,20 @@ namespace DES_lib
 						qwIV = Encrypt(qwIV, qwKey);
 						QWORD token = BitConverter.ToUInt64(bsCipher.GetBytes(), (part - count) * 8) ^ qwIV;
 						qwlPlain.Add(token);
+						--count;
+					}
+					break;
+				case Mode.PCBC:
+					part = (int)Math.Ceiling(bsCipher.GetLength() / 8.0);
+					count = part;
+					rem = 8 - (bsCipher.GetLength() % 8);
+					bsCipher += new byte[rem];
+					while (count > 0)
+					{
+						QWORD token = BitConverter.ToUInt64(bsCipher.GetBytes(), (part - count) * 8);
+						QWORD qwPlain = qwIV ^ Decrypt(token, qwKey);
+						qwlPlain.Add(qwPlain);
+						qwIV = token ^ qwPlain;
 						--count;
 					}
 					break;

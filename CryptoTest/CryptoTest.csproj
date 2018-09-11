@@ -87,6 +87,10 @@
     <None Include="CryptoTest_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AES_lib\AES_lib.csproj">
+      <Project>{d374ddcb-3bc4-4c28-b494-965a097a3a30}</Project>
+      <Name>AES_lib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BASE64_lib\BASE64_lib.csproj">
       <Project>{2254a738-63ac-4be4-8254-0b7820eee0b0}</Project>
       <Name>BASE64_lib</Name>

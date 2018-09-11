@@ -169,7 +169,7 @@ namespace RSA_lib
 				strPKCS = strPKCS.Insert(count, "\n");
 				count += 65;
 			}
-			strPKCS = "-----BEGIN PUBLIC KEY-----\n" + strPKCS + "\n-----END PUBLIC KEY-----\n";
+			strPKCS = "-----BEGIN RSA PUBLIC KEY-----\n" + strPKCS + "\n-----END RSA PUBLIC KEY-----\n";
 			return strPKCS;
 		}
 		/// <summary>

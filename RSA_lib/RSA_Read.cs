@@ -64,8 +64,8 @@ namespace RSA_lib
 		{
 			try
 			{
-				strPKCS1 = strPKCS1.Remove(0, 27);
-				strPKCS1 = strPKCS1.Remove(strPKCS1.LastIndexOf("\n-----END PUBLIC KEY-----\n"));
+				strPKCS1 = strPKCS1.Remove(0, 31);
+				strPKCS1 = strPKCS1.Remove(strPKCS1.LastIndexOf("\n-----END RSA PUBLIC KEY-----\n"));
 				strPKCS1 = strPKCS1.Replace("\n", "");
 			}
 			catch (Exception inner)

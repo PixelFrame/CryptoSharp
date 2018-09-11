@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
+using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using BASE64_lib;
 using DES_lib;
 using RSA_lib;
+using AES_lib;
 
 namespace CryptoTest
 {
@@ -27,7 +29,9 @@ namespace CryptoTest
 								"3: PRIME_GEN\n" +
 								"4: RSA_BASIC\n" +
 								"5: DES_BLOCK\n" +
-								"6: RSA_PKCS#1");
+								"6: RSA_PKCS#1\n" +
+								"7: RSA_PKCS#1_RW\n" +
+								"8: AES_BASIC");
 				cki = Console.ReadKey();
 				switch (cki.KeyChar)
 				{
@@ -59,6 +63,16 @@ namespace CryptoTest
 					case '6':
 						Console.WriteLine("\n************TEST_START************");
 						RSA_PKCS1_TEST();
+						Console.WriteLine("\n************TEST_FINISHED************");
+						break;
+					case '7':
+						Console.WriteLine("\n************TEST_START************");
+						RSA_PKCS1_RW_TEST();
+						Console.WriteLine("\n************TEST_FINISHED************");
+						break;
+					case '8':
+						Console.WriteLine("\n************TEST_START************");
+						AES_BASIC_TEST();
 						Console.WriteLine("\n************TEST_FINISHED************");
 						break;
 					default:
@@ -144,7 +158,7 @@ namespace CryptoTest
 				"de Visual Studio 2017 version 15.7.2.";
 			byte[] baPlain = Encoding.Unicode.GetBytes(strPlain);
 			ulong key = 0x0123456789ABCDEF;
-			Mode[] modes = new Mode[] { Mode.ECB, Mode.CBC, Mode.CFB, Mode.OFB };
+			Mode[] modes = new Mode[] { Mode.ECB, Mode.CBC, Mode.CFB, Mode.OFB, Mode.PCBC };
 			foreach (Mode m in modes)
 			{
 				byte[] baCipher = DES_Main.EncryptBlockB(baPlain, key, key, m);
@@ -195,6 +209,37 @@ namespace CryptoTest
 			{
 				Console.WriteLine(e.errInfo);
 			}
+		}
+		[TestMethod]
+		static void RSA_PKCS1_RW_TEST()
+		{
+			string strPath = @"D:\RSA_PRI.pem";
+			if(!RSA_Write.PKCS1_Pri_Write(strPath))
+			{
+				Console.WriteLine("CAN NOT WRITE FILE");
+				return;
+			}
+			string strPKCS1_Pri = new string(Encoding.ASCII.GetChars(File.ReadAllBytes(strPath)));
+			strPath = @"D:\RSA_PUB.pem";
+			if(!RSA_Write.PKCS1_Pub_Write(strPath, strPKCS1_Pri))
+			{
+				Console.WriteLine("CAN NOT WRITE FILE");
+				return;
+			}
+			Console.WriteLine("SUCCESSFULLY WRITTEN FILE");
+		}
+		[TestMethod]
+		static void AES_BASIC_TEST()
+		{
+			byte[] data = { 0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10 };
+			byte[] bkey = { 0x0f, 0x15, 0x71, 0xc9, 0x47, 0xd9, 0xe8, 0x59, 0x0c, 0xb7, 0xad, 0xd6, 0xaf, 0x7f, 0x67, 0x98 };
+			AES_Data_128 plain = new AES_Data_128(data);
+			AES_Key_128 key = new AES_Key_128(bkey);
+			AES_Data_128 cipher = AES_Main.Encrypt(plain, key);
+			byte[] res = AES_Main.Decrypt(cipher, key).GetBytes();
+			Console.WriteLine("INPUT DATA: " + Encoding.ASCII.GetString(data));
+			Console.WriteLine("KEY: " + Encoding.ASCII.GetString(bkey));
+			Console.WriteLine("RESULT: " + Encoding.ASCII.GetString(res));
 		}
 	}
 }
