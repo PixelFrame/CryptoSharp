@@ -31,7 +31,8 @@ namespace CryptoTest
 								"5: DES_BLOCK\n" +
 								"6: RSA_PKCS#1\n" +
 								"7: RSA_PKCS#1_RW\n" +
-								"8: AES_BASIC");
+								"8: AES_BASIC\n" + 
+								"9: AES_BLOCK");
 				cki = Console.ReadKey();
 				switch (cki.KeyChar)
 				{
@@ -73,6 +74,11 @@ namespace CryptoTest
 					case '8':
 						Console.WriteLine("\n************TEST_START************");
 						AES_BASIC_TEST();
+						Console.WriteLine("\n************TEST_FINISHED************");
+						break;
+					case '9':
+						Console.WriteLine("\n************TEST_START************");
+						AES_BLOCK_TEST();
 						Console.WriteLine("\n************TEST_FINISHED************");
 						break;
 					default:
@@ -158,8 +164,8 @@ namespace CryptoTest
 				"de Visual Studio 2017 version 15.7.2.";
 			byte[] baPlain = Encoding.Unicode.GetBytes(strPlain);
 			ulong key = 0x0123456789ABCDEF;
-			Mode[] modes = new Mode[] { Mode.ECB, Mode.CBC, Mode.CFB, Mode.OFB, Mode.PCBC };
-			foreach (Mode m in modes)
+			DES_lib.Mode[] modes = new DES_lib.Mode[] { DES_lib.Mode.ECB, DES_lib.Mode.CBC, DES_lib.Mode.CFB, DES_lib.Mode.OFB, DES_lib.Mode.PCBC };
+			foreach (DES_lib.Mode m in modes)
 			{
 				byte[] baCipher = DES_Main.EncryptBlockB(baPlain, key, key, m);
 				byte[] baResult = DES_Main.DecryptBlockB(baCipher, key, key, m);
@@ -232,14 +238,39 @@ namespace CryptoTest
 		static void AES_BASIC_TEST()
 		{
 			byte[] data = { 0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10 };
-			byte[] bkey = { 0x0f, 0x15, 0x71, 0xc9, 0x47, 0xd9, 0xe8, 0x59, 0x0c, 0xb7, 0xad, 0xd6, 0xaf, 0x7f, 0x67, 0x98 };
-			AES_Data_128 plain = new AES_Data_128(data);
-			AES_Key_128 key = new AES_Key_128(bkey);
-			AES_Data_128 cipher = AES_Main.Encrypt(plain, key);
-			byte[] res = AES_Main.Decrypt(cipher, key).GetBytes();
+			byte[] key = { 0x0f, 0x15, 0x71, 0xc9, 0x47, 0xd9, 0xe8, 0x59, 0x0c, 0xb7, 0xad, 0xd6, 0xaf, 0x7f, 0x67, 0x98 };
+			byte[] cipher = AES_Main.Encrypt(data, key);
+			byte[] res = AES_Main.Decrypt(cipher, key);
 			Console.WriteLine("INPUT DATA: " + Encoding.ASCII.GetString(data));
-			Console.WriteLine("KEY: " + Encoding.ASCII.GetString(bkey));
+			Console.WriteLine("KEY: " + Encoding.ASCII.GetString(key));
 			Console.WriteLine("RESULT: " + Encoding.ASCII.GetString(res));
+
+		}
+		[TestMethod]
+		static void AES_BLOCK_TEST()
+		{
+			string strPlain =
+				"C#[b] (/si: ʃɑːrp/) is a multi-paradigm programming language " +
+				"encompassing strong typing, imperative, declarative, functional," +
+				" generic, object-oriented (class-based), and component-oriented " +
+				"programming disciplines. It was developed around 2000 by Micros" +
+				"oft within its .NET initiative and later approved as a standard" +
+				" by Ecma (ECMA-334) and ISO (ISO/IEC 23270:2006). C# is one of " +
+				"the programming languages designed for the Common Language Infr" +
+				"astructure.C# is a general-purpose, object-oriented programming " +
+				"language. Its development team is led by Anders Hejlsberg. The m" +
+				"ost recent version is C# 7.3, which was released in 2018 alongsi" +
+				"de Visual Studio 2017 version 15.7.2.";
+			byte[] baPlain = Encoding.Unicode.GetBytes(strPlain);
+			byte[] baKey = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F };
+			AES_lib.Mode[] modes = new AES_lib.Mode[] { AES_lib.Mode.ECB, AES_lib.Mode.CBC, AES_lib.Mode.OFB, AES_lib.Mode.PCBC };
+			foreach (AES_lib.Mode m in modes)
+			{
+				byte[] baCipher = AES_Main.EncryptBlock(baPlain, baKey, baKey, m);
+				byte[] baResult = AES_Main.DecryptBlock(baCipher, baKey, baKey, m);
+				Console.WriteLine(Encoding.Unicode.GetChars(baResult));
+				Console.WriteLine("**************************************************");
+			}
 		}
 	}
 }

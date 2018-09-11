@@ -161,5 +161,61 @@ namespace ByteString_lib
 			_byteStr[idx1] = _byteStr[idx0];
 			_byteStr[idx0] = temp;
 		}
+		/// <summary>
+		/// 返回子串
+		/// </summary>
+		/// <param name="startIndex"></param>
+		/// <param name="length"></param>
+		/// <returns></returns>
+		public ByteString SubString(int startIndex, int length)
+		{
+			ByteString subString = new ByteString();
+			try
+			{
+				while (length > 0)
+				{
+					subString += _byteStr[startIndex];
+					startIndex++;
+					length--;
+				}
+			}
+			catch(ArgumentOutOfRangeException)
+			{
+				return new ByteString();
+			}
+			return subString;
+		}
+		/// <summary>
+		/// ByteString与byte[]异或，返回结果永远以ByteString为主
+		/// </summary>
+		/// <param name="bsParam"></param>
+		/// <param name="baParam"></param>
+		/// <returns></returns>
+		public static ByteString operator ^ (ByteString bsParam, byte[] baParam)
+		{
+			ByteString bsRes = new ByteString(bsParam.GetBytes());
+			int count = bsParam.GetLength() < baParam.Length ? bsParam.GetLength() : baParam.Length;
+			while(count-- > 0)
+			{
+				bsRes[count] ^= baParam[count];
+			}
+			return bsRes;
+		}
+		/// <summary>
+		/// ByteString异或，返回结果以左侧为主
+		/// </summary>
+		/// <param name="bsParam0"></param>
+		/// <param name="bsParam1"></param>
+		/// <returns></returns>
+		public static ByteString operator ^(ByteString bsParam0, ByteString bsParam1)
+		{
+			ByteString bsRes = new ByteString(bsParam0.GetBytes());
+			int count = bsParam0.GetLength() < bsParam0.GetLength() ? bsParam0.GetLength() : bsParam1.GetLength();
+			while (count-- > 0)
+			{
+				bsRes[count] ^= bsParam1[count];
+			}
+			return bsRes;
+		}
 	}
 }
