@@ -73,15 +73,35 @@ namespace BASE64_lib
 			return bsEnc.GetBytes();
 		}
 		/// <summary>
+		/// BASE64加密方法 输入byte数组 输出字符串
+		/// </summary>
+		/// <param name="bPlain"></param>
+		/// <param name="coding"></param>
+		/// <returns></returns>
+		public static string EncryptS(byte[] bPlain, int coding)
+		{
+			return new string(Encoding.GetEncoding(coding).GetChars(EncryptB(bPlain)));
+		}
+		/// <summary>
+		/// BASE64加密方法 输入byte数组 输出字符串
+		/// </summary>
+		/// <param name="bPlain"></param>
+		/// <param name="coding"></param>
+		/// <returns></returns>
+		public static string EncryptS(byte[] bPlain, string coding)
+		{
+			return new string(Encoding.GetEncoding(coding).GetChars(EncryptB(bPlain)));
+		}
+		/// <summary>
 		/// BASE64加密方法 输入/输出字符串 不改变字符串编码
 		/// </summary>
 		/// <param name="strPlain">明文字符串</param>
 		/// <param name="coding">字符串编码名称</param>
 		/// <returns>BASE64字符串</returns>
-		public static String EncryptS(String strPlain, String coding)
+		public static string EncryptS(string strPlain, string coding)
 		{
 			byte[] bPlain = Encoding.GetEncoding(coding).GetBytes(strPlain);
-			return new String(Encoding.GetEncoding(coding).GetChars(EncryptB(bPlain)));
+			return new string(Encoding.GetEncoding(coding).GetChars(EncryptB(bPlain)));
 		}
 		/// <summary>
 		/// BASE64加密方法 输入/输出字符串 不改变字符串编码
@@ -89,10 +109,10 @@ namespace BASE64_lib
 		/// <param name="strPlain">明文字符串</param>
 		/// <param name="coding">字符串编码编号</param>
 		/// <returns>BASE64字符串</returns>
-		public static String EncryptS(String strPlain, int coding)
+		public static string EncryptS(string strPlain, int coding)
 		{
 			byte[] bPlain = Encoding.GetEncoding(coding).GetBytes(strPlain);
-			return new String(Encoding.GetEncoding(coding).GetChars(EncryptB(bPlain)));
+			return new string(Encoding.GetEncoding(coding).GetChars(EncryptB(bPlain)));
 		}
 		/// <summary>
 		/// BASE64解密方法 输入/输出byte数组
@@ -149,15 +169,35 @@ namespace BASE64_lib
 			return bsPlain.GetBytes();
 		}
 		/// <summary>
+		/// BASE64解密方法 输入byte数组 输出字符串
+		/// </summary>
+		/// <param name="baEnc"></param>
+		/// <param name="coding"></param>
+		/// <returns></returns>
+		public static string DecodeS(byte[] baEnc, int coding)
+		{
+			return new string(Encoding.GetEncoding(coding).GetChars(DecodeB(baEnc)));
+		}
+		/// <summary>
+		/// BASE64解密方法 输入byte数组 输出字符串
+		/// </summary>
+		/// <param name="baEnc"></param>
+		/// <param name="coding"></param>
+		/// <returns></returns>
+		public static string DecodeS(byte[] baEnc, string coding)
+		{
+			return new string(Encoding.GetEncoding(coding).GetChars(DecodeB(baEnc)));
+		}
+		/// <summary>
 		/// BASE64解密方法 输入/输出字符串 不改变字符串编码
 		/// </summary>
 		/// <param name="strPlain">BASE64字符串</param>
 		/// <param name="coding">字符串编码名称</param>
 		/// <returns>明文字符串</returns>
-		public static String DecodeS(String strEnc, String coding)
+		public static string DecodeS(string strEnc, string coding)
 		{
 			byte[] baEnc = Encoding.GetEncoding(coding).GetBytes(strEnc);
-			return new String(Encoding.GetEncoding(coding).GetChars(DecodeB(baEnc)));
+			return new string(Encoding.GetEncoding(coding).GetChars(DecodeB(baEnc)));
 		}
 		/// <summary>
 		/// BASE64解密方法 输入/输出字符串 不改变字符串编码
@@ -165,10 +205,10 @@ namespace BASE64_lib
 		/// <param name="strPlain">BASE64字符串</param>
 		/// <param name="coding">字符串编码编号</param>
 		/// <returns>明文字符串</returns>
-		public static String DecodeS(String strEnc, int coding)
+		public static string DecodeS(string strEnc, int coding)
 		{
 			byte[] baEnc = Encoding.GetEncoding(coding).GetBytes(strEnc);
-			return new String(Encoding.GetEncoding(coding).GetChars(DecodeB(baEnc)));
+			return new string(Encoding.GetEncoding(coding).GetChars(DecodeB(baEnc)));
 		}
 	}
 }
