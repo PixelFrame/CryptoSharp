@@ -16,7 +16,6 @@ namespace CryptoSharp
 	{
 		#region MainForm Variables
 		string Input;
-		string Output;
 		List<string> AlgorithmList = new List<string>();
 		List<string> ModeList = new List<string>();
 		List<byte> Key = new List<byte>();
@@ -26,14 +25,12 @@ namespace CryptoSharp
 		RNGCryptoServiceProvider csp = new RNGCryptoServiceProvider();
 
 		CryptCore Core = new CryptCore();
-
 		#endregion
 
 		public MainForm()
 		{
 			InitializeComponent();
 			Input = "";
-			Output = "";
 			AlgorithmList.Add("AES-128");
 			AlgorithmList.Add("DES");
 			AlgorithmList.Add("BASE64");
@@ -45,6 +42,8 @@ namespace CryptoSharp
 			ModeList.Add("PCBC");
 			cbMode.DataSource = ModeList;
 		}
+
+		#region Control Events
 
 		private void btnExit_Click(object sender, EventArgs e)
 		{
@@ -82,6 +81,8 @@ namespace CryptoSharp
 					tbIV.Enabled = true;
 					tbKey.Enabled = true;
 					cbMode.Enabled = true;
+					ckbInBASE64.Enabled = true;
+					ckbOutBASE64.Enabled = true;
 					break;
 				case 1:
 					DataLength = 8;
@@ -90,6 +91,8 @@ namespace CryptoSharp
 					tbIV.Enabled = true;
 					tbKey.Enabled = true;
 					cbMode.Enabled = true;
+					ckbInBASE64.Enabled = true;
+					ckbOutBASE64.Enabled = true;
 					break;
 				case 2:
 					btnRandIV.Enabled = false;
@@ -97,6 +100,9 @@ namespace CryptoSharp
 					tbIV.Enabled = false;
 					tbKey.Enabled = false;
 					cbMode.Enabled = false;
+					ckbInBASE64.Enabled = false;
+					ckbInBASE64.Checked = false;
+					ckbOutBASE64.Enabled = false;
 					break;
 			}
 			tbKey.Text = "";
@@ -149,9 +155,46 @@ namespace CryptoSharp
 			}
 		}
 
+		private void btnDecrypt_Click(object sender, EventArgs e)
+		{
+			Input = tbInput.Text;
+			Key = HexStringToBytes(tbKey.Text);
+			IV = HexStringToBytes(tbIV.Text);
+
+			byte[] InputBytes;
+			if (ckbInBASE64.Checked) InputBytes = Core.BASE64_Decrypt(Input);
+			else InputBytes = Encoding.UTF8.GetBytes(Input);
+
+			switch (cbAlgorithm.SelectedIndex)
+			{
+				case 0:
+					UpdateOutput(Core.AES_Crypt(true, InputBytes, Key.ToArray(), IV.ToArray(), cbMode.SelectedIndex));
+					break;
+				case 1:
+					UpdateOutput(Core.DES_Crypt(true, InputBytes, BitConverter.ToUInt64(Key.ToArray(), 0), BitConverter.ToUInt64(IV.ToArray(), 0), cbMode.SelectedIndex));
+					break;
+				case 2:
+					tbOutput.Text = Core.BASE64_Convert(true, Input);
+					break;
+			}
+		}
+
+		private void ckbInBASE64_CheckedChanged(object sender, EventArgs e)
+		{
+			if (ckbInBASE64.Checked)
+			{
+				btnEncrypt.Enabled = false;
+			}
+			else
+			{
+				btnEncrypt.Enabled = true;
+			}
+		}
+		#endregion
+
 		private void UpdateOutput(byte[] output)
 		{
-			if (ckbOutBASE64.Checked) tbOutput.Text = Core.BASE64_Convert(false, output);
+			if (ckbOutBASE64.Checked) tbOutput.Text = Core.BASE64_Encrypt(output);
 			else tbOutput.Text = new string(Encoding.UTF8.GetChars(output));
 		}
 
@@ -212,6 +255,11 @@ namespace CryptoSharp
 			}
 			while (bytes.Count < DataLength) bytes.Add(new byte());
 			return bytes;
+		}
+
+		private void btnRSA_Click(object sender, EventArgs e)
+		{
+			MessageBox.Show("COMING SOON", "???", MessageBoxButtons.OK, MessageBoxIcon.Question);
 		}
 	}
 }

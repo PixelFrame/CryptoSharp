@@ -16,6 +16,7 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+				csp.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -68,7 +69,7 @@
 			this.cbAlgorithm.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.cbAlgorithm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbAlgorithm.FormattingEnabled = true;
-			this.cbAlgorithm.Location = new System.Drawing.Point(77, 5);
+			this.cbAlgorithm.Location = new System.Drawing.Point(77, 3);
 			this.cbAlgorithm.Name = "cbAlgorithm";
 			this.cbAlgorithm.Size = new System.Drawing.Size(121, 25);
 			this.cbAlgorithm.TabIndex = 0;
@@ -99,7 +100,7 @@
 			this.cbMode.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.cbMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbMode.FormattingEnabled = true;
-			this.cbMode.Location = new System.Drawing.Point(77, 35);
+			this.cbMode.Location = new System.Drawing.Point(77, 33);
 			this.cbMode.Name = "cbMode";
 			this.cbMode.Size = new System.Drawing.Size(121, 25);
 			this.cbMode.TabIndex = 1;
@@ -108,10 +109,13 @@
 			// 
 			this.tbInput.AcceptsReturn = true;
 			this.tbInput.AcceptsTab = true;
+			this.tbInput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.tbInput.Location = new System.Drawing.Point(3, 32);
 			this.tbInput.Multiline = true;
 			this.tbInput.Name = "tbInput";
-			this.tbInput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.tbInput.ScrollBars = System.Windows.Forms.ScrollBars.Both;
 			this.tbInput.Size = new System.Drawing.Size(416, 161);
 			this.tbInput.TabIndex = 1;
 			this.tbInput.TabStop = false;
@@ -119,11 +123,14 @@
 			// 
 			// tbOutput
 			// 
+			this.tbOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.tbOutput.Location = new System.Drawing.Point(3, 228);
 			this.tbOutput.Multiline = true;
 			this.tbOutput.Name = "tbOutput";
 			this.tbOutput.ReadOnly = true;
-			this.tbOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.tbOutput.ScrollBars = System.Windows.Forms.ScrollBars.Both;
 			this.tbOutput.Size = new System.Drawing.Size(416, 162);
 			this.tbOutput.TabIndex = 5;
 			this.tbOutput.TabStop = false;
@@ -133,7 +140,7 @@
 			// 
 			this.lbInput.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.lbInput.AutoSize = true;
-			this.lbInput.Location = new System.Drawing.Point(3, 4);
+			this.lbInput.Location = new System.Drawing.Point(3, 5);
 			this.lbInput.Margin = new System.Windows.Forms.Padding(3);
 			this.lbInput.Name = "lbInput";
 			this.lbInput.Size = new System.Drawing.Size(38, 17);
@@ -170,6 +177,7 @@
 			this.btnDecrypt.TabIndex = 9;
 			this.btnDecrypt.Text = "Decrypt";
 			this.btnDecrypt.UseVisualStyleBackColor = true;
+			this.btnDecrypt.Click += new System.EventHandler(this.btnDecrypt_Click);
 			// 
 			// ckbOutBASE64
 			// 
@@ -190,12 +198,16 @@
 			this.btnRSA.TabIndex = 13;
 			this.btnRSA.Text = "RSA Utils";
 			this.btnRSA.UseVisualStyleBackColor = true;
+			this.btnRSA.Click += new System.EventHandler(this.btnRSA_Click);
 			// 
 			// tlpMain
 			// 
+			this.tlpMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.tlpMain.ColumnCount = 2;
-			this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 61.90476F));
-			this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 38.09524F));
+			this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
 			this.tlpMain.Controls.Add(this.tlpRightSetB, 1, 3);
 			this.tlpMain.Controls.Add(this.tbOutput, 0, 3);
 			this.tlpMain.Controls.Add(this.tlpRightSetA, 1, 1);
@@ -358,6 +370,7 @@
 			// 
 			// tableLayoutPanel1
 			// 
+			this.tableLayoutPanel1.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.tableLayoutPanel1.ColumnCount = 2;
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -367,7 +380,7 @@
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
 			this.tableLayoutPanel1.RowCount = 1;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
 			this.tableLayoutPanel1.Size = new System.Drawing.Size(416, 23);
 			this.tableLayoutPanel1.TabIndex = 15;
 			// 
@@ -376,13 +389,15 @@
 			this.ckbInBASE64.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.ckbInBASE64.Location = new System.Drawing.Point(211, 3);
 			this.ckbInBASE64.Name = "ckbInBASE64";
-			this.ckbInBASE64.Size = new System.Drawing.Size(202, 20);
+			this.ckbInBASE64.Size = new System.Drawing.Size(202, 22);
 			this.ckbInBASE64.TabIndex = 13;
 			this.ckbInBASE64.Text = "BASE64 Decrypt First";
 			this.ckbInBASE64.UseVisualStyleBackColor = true;
+			this.ckbInBASE64.CheckedChanged += new System.EventHandler(this.ckbInBASE64_CheckedChanged);
 			// 
 			// tableLayoutPanel2
 			// 
+			this.tableLayoutPanel2.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.tableLayoutPanel2.ColumnCount = 2;
 			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
 			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -392,7 +407,7 @@
 			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
 			this.tableLayoutPanel2.RowCount = 1;
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
 			this.tableLayoutPanel2.Size = new System.Drawing.Size(416, 23);
 			this.tableLayoutPanel2.TabIndex = 16;
 			// 
@@ -405,6 +420,7 @@
 			this.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.MinimumSize = new System.Drawing.Size(723, 456);
 			this.Name = "MainForm";
 			this.Text = "CryptoSharp";
 			this.tlpMain.ResumeLayout(false);

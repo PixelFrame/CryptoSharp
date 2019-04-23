@@ -30,10 +30,14 @@ namespace CryptoSharp
 			else return BASE64_Main.EncryptS(strData, "UTF-8");
 		}
 
-		public string BASE64_Convert(bool action, byte[] baData)
+		public string BASE64_Encrypt(byte[] baData)
 		{
-			if (action) return BASE64_Main.DecodeS(baData, "UTF-8");
-			else return BASE64_Main.EncryptS(baData, "UTF-8");
+			return BASE64_Main.EncryptS(baData, "UTF-8");
+		}
+
+		public byte[] BASE64_Decrypt(string strData)
+		{
+			return BASE64_Main.DecodeB(Encoding.UTF8.GetBytes(strData));
 		}
 	}
 }

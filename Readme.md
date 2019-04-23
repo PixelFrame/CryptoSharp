@@ -1,9 +1,6 @@
 # CryptoSharp
 
-Copyright 2018 &copy; Pixel Frame
-
-**HAVE NOT BEEN RELEASED**</br>
-**Planning to release v1.0 in August.**
+Copyright 2018-2019 &copy; Pixel Frame
 
 - C# WinForm Application
 - MIT License
